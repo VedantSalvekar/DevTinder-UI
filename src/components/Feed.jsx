@@ -22,17 +22,17 @@ const Feed = () => {
   }, []);
   if (!feed) return;
 
-  if (feed.length <= 0)
-    return (
-      <h1 className=" flex justify-center m-52 text-3xl">No more users!!!!</h1>
-    );
   return (
-    feed && (
-      <div className="flex flex-col items-center gap-4 my-5">
-        {feed && feed.map((user) => <UserCard key={user._id} user={user} />)}
-        {/* <UserCard user={feed[0]} /> */}
-      </div>
-    )
+    <div className="flex flex-col items-center gap-4 my-5">
+      {feed?.length > 0 ? (
+        // feed.map((item) => (
+        //   <UserCard key={item._id} user={item} isProfile={false} />
+        // ))
+        <UserCard user={feed[0]} isProfile={false} />
+      ) : (
+        <h1 className="text-2xl">No New Users found!</h1>
+      )}
+    </div>
   );
 };
 
