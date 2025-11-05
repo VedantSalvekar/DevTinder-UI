@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addConnections } from "../utils/connectionSlice";
 import axios from "axios";
@@ -7,23 +7,42 @@ import { BASE_URL } from "../utils/constants";
 const Connections = () => {
   const dispatch = useDispatch();
   const connections = useSelector((store) => store.connections);
+  const [error, setError] = useState("");
 
-  const fetchConnections = async () => {
+  const fetchConnections = useCallback(async () => {
     try {
-      if (connections) return;
+      setError("");
       const res = await axios.get(BASE_URL + "user/connections", {
         withCredentials: true,
       });
       dispatch(addConnections(res.data));
       console.log(res.data);
     } catch (err) {
-      console.log(err);
+      console.error("Error fetching connections:", err);
+      setError(err.response?.data?.message || "Failed to load connections. Please try again.");
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
-    fetchConnections();
-  }, []);
+    if (!connections) {
+      fetchConnections();
+    }
+  }, [connections, fetchConnections]);
+
+  if (!connections && !error) return <div className="flex justify-center my-10">Loading...</div>;
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center gap-4 my-10">
+        <div className="alert alert-error max-w-md">
+          <span>{error}</span>
+        </div>
+        <button className="btn btn-primary" onClick={fetchConnections}>
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -32,50 +51,43 @@ const Connections = () => {
           Your Connections{" "}
         </li>
 
-        {connections?.map((connection) => (
-          <li className="list-row  bg-cyan-950 ">
-            <div>
-              <img
-                className="size-10 rounded-box"
-                src="https://img.daisyui.com/images/profile/demo/1@94.webp"
-              />
-            </div>
-            <div>
-              <div>{connection.firstName}</div>
-              <div className="text-xs uppercase font-semibold opacity-60">
-                {connection.about}
-              </div>
-            </div>
-            {/* <p className="list-col-wrap text-xs">{connection.about}</p> */}
-            <button className="btn btn-square btn-ghost hover:bg-red-100 text-red-500">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="size-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
+        {connections?.length > 0 ? (
+          connections.map((connection) => (
+            <li key={connection._id} className="list-row bg-cyan-950 m-2">
+              <div>
+                <img
+                  className="size-10 rounded-box"
+                  src={connection.photoUrl || "https://img.daisyui.com/images/profile/demo/1@94.webp"}
+                  alt={connection.firstName}
                 />
-              </svg>
-            </button>
-
-            {/* <button className="btn btn-square btn-ghost hover:bg-pink-100 text-pink-500">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="size-5"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 4 4 6.5 4c1.74 0 3.41 1.01 4.13 2.44h.74C14.09 5.01 15.76 4 17.5 4 20 4 22 6 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-              </svg>
-            </button> */}
-          </li>
-        ))}
+              </div>
+              <div>
+                <div>{connection.firstName + " " + (connection.lastName || "")}</div>
+                <div className="text-xs uppercase font-semibold opacity-60">
+                  {connection.about}
+                </div>
+              </div>
+              <button className="btn btn-square btn-ghost hover:bg-red-100 text-red-500">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="size-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </li>
+          ))
+        ) : (
+          <li className="p-4 text-center">No connections yet!</li>
+        )}
       </ul>
     </div>
   );

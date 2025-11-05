@@ -4,12 +4,24 @@ import { useSelector } from "react-redux";
 
 const Profile = () => {
   const user = useSelector((store) => store.user);
-  return (
-    user && (
-      <div>
-        <EditProfile user={user} />
+  
+  console.log("Profile - User data:", user);
+  
+  if (!user) {
+    return (
+      <div className="flex justify-center my-10">
+        <div className="alert alert-warning max-w-md">
+          <span>No user data found. Please login again.</span>
+        </div>
       </div>
-    )
+    );
+  }
+  
+  // Force EditProfile to remount when user data changes by using key
+  return (
+    <div>
+      <EditProfile key={user._id || user.emailId} user={user} />
+    </div>
   );
 };
 

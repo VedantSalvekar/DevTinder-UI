@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Body from "./components/Body";
@@ -17,6 +17,7 @@ function App() {
         <BrowserRouter basename="/">
           <Routes>
             <Route path="/" element={<Body />}>
+              {/* <Route index element={<Navigate to="/login" replace />} /> */}
               <Route path="/login" element={<Login />} />
               <Route path="/feed" element={<Feed />} />
               <Route path="/profile" element={<Profile />} />

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { BASE_URL } from "../utils/constants";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,27 +8,44 @@ import UserCard from "./UserCard";
 const Feed = () => {
   const feed = useSelector((store) => store.feed);
   const dispatch = useDispatch();
-  const getFeed = async () => {
+  const [error, setError] = useState("");
+  
+  const getFeed = useCallback(async () => {
     try {
-      if (feed) return;
+      setError("");
       const res = await axios.get(BASE_URL + "feed", { withCredentials: true });
       dispatch(addFeed(res.data));
     } catch (err) {
-      console.log(err.message);
+      console.error("Error fetching feed:", err);
+      setError(err.response?.data?.message || "Failed to load feed. Please try again later.");
     }
-  };
+  }, [dispatch]);
+  
   useEffect(() => {
-    getFeed();
-  }, []);
-  if (!feed) return;
+    if (!feed) {
+      getFeed();
+    }
+  }, [feed, getFeed]);
+  
+  if (!feed && !error) return <div className="flex justify-center my-10">Loading...</div>;
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center gap-4 my-10">
+        <div className="alert alert-error max-w-md">
+          <span>{error}</span>
+        </div>
+        <button className="btn btn-primary" onClick={getFeed}>
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center gap-4 my-5">
       {feed?.length > 0 ? (
-        // feed.map((item) => (
-        //   <UserCard key={item._id} user={item} isProfile={false} />
-        // ))
-        <UserCard user={feed[0]} isProfile={false} />
+        <UserCard user={feed[0]} />
       ) : (
         <h1 className="text-2xl">No New Users found!</h1>
       )}

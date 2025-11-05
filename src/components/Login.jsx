@@ -6,17 +6,26 @@ import { useNavigate } from "react-router";
 import { BASE_URL } from "../utils/constants";
 
 const Login = () => {
-  const [emailId, setEmailId] = useState("vedant@gmail.com");
-  const [password, setPassword] = useState("Admin@11");
+  const [emailId, setEmailId] = useState("");
+  const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [isLoginForm, setIsLoginForm] = useState(true);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    // Validation
+    if (!emailId || !password) {
+      setError("Please fill in all fields");
+      return;
+    }
+    
     try {
+      setLoading(true);
+      setError("");
       const res = await axios.post(
         BASE_URL + "login",
         {
@@ -30,11 +39,26 @@ const Login = () => {
       dispatch(addUser(res.data));
       return navigate("/feed");
     } catch (err) {
-      setError(err?.response?.data);
+      setError(err?.response?.data || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
   const handleSignUp = async () => {
+    // Validation
+    if (!firstName || !lastName || !emailId || !password) {
+      setError("Please fill in all fields");
+      return;
+    }
+    
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
+    
     try {
+      setLoading(true);
+      setError("");
       const res = await axios.post(
         BASE_URL + "signup",
         {
@@ -47,12 +71,24 @@ const Login = () => {
           withCredentials: true,
         }
       );
-      console.log(res);
-      dispatch(addUser(res.data.data));
+      console.log("Signup response:", res.data);
+      
+      let userData = res.data.data || res.data;
+      
+      if (userData.data) {
+        userData = userData.data;
+      }
+      
+      console.log("User data to dispatch:", userData);
+      
+      // Dispatch user data and navigate to profile page
+      dispatch(addUser(userData));
       return navigate("/profile");
     } catch (error) {
-      setError(error.response.data);
-      console.log(error);
+      setError(error?.response?.data || "Signup failed. Please try again.");
+      console.error("Signup error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -101,20 +137,32 @@ const Login = () => {
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <a className="text-red-500">{error}</a>
+        {error && (
+          <div className="alert alert-error text-sm mt-2">
+            <span>{error}</span>
+          </div>
+        )}
         <button
           className="btn btn-neutral mt-4"
           onClick={isLoginForm ? handleLogin : handleSignUp}
+          disabled={loading}
         >
-          {isLoginForm ? "Login" : "Signup"}
+          {loading ? (
+            <span className="loading loading-spinner loading-sm"></span>
+          ) : (
+            isLoginForm ? "Login" : "Signup"
+          )}
         </button>
         <p
           className=" text-center cursor-pointer py-2"
-          onClick={() => setIsLoginForm((value) => !value)}
+          onClick={() => {
+            setIsLoginForm((value) => !value);
+            setError("");
+          }}
         >
           {isLoginForm
-            ? "New user ? signup here"
-            : "Existing User ? Login here"}
+            ? "New user? Signup here"
+            : "Existing User? Login here"}
         </p>
       </fieldset>
     </div>

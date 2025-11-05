@@ -18,10 +18,9 @@ const Body = () => {
       });
       dispatch(addUser(res.data));
     } catch (err) {
-      if (err.status === 401) {
+      if (err.response?.status === 401 || err.response?.status === 400) {
         navigate("/login");
       }
-
       console.log(err);
     }
   };

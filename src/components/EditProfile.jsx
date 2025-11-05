@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import UserCard from "./UserCard";
 import axios from "axios";
@@ -6,16 +6,32 @@ import { BASE_URL } from "../utils/constants";
 import { addUser } from "../utils/userSlice";
 
 const EditProfile = ({ user }) => {
-  const [firstName, setFirstname] = useState(user.firstName);
-  const [lastName, setLastName] = useState(user.lastName);
-  const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
-  const [age, setAge] = useState(user.age || "");
-  const [gender, setGender] = useState(user.gender);
-  const [about, setAbout] = useState(user.about);
-  const [skills, setSkills] = useState(user.skills || []);
+  const [firstName, setFirstname] = useState(user?.firstName || "");
+  const [lastName, setLastName] = useState(user?.lastName || "");
+  const [photoUrl, setPhotoUrl] = useState(user?.photoUrl || "");
+  const [age, setAge] = useState(user?.age || "");
+  const [gender, setGender] = useState(user?.gender || "");
+  const [about, setAbout] = useState(user?.about || "");
+  const [skills, setSkills] = useState(user?.skills || []);
   const [error, setError] = useState("");
   const [showToast, setShowToast] = useState(false);
   const dispatch = useDispatch();
+  
+  useEffect(() => {
+    console.log("EditProfile - Received user prop:", user);
+  }, [user]);
+  
+  useEffect(() => {
+    if (user) {
+      setFirstname(user.firstName || "");
+      setLastName(user.lastName || "");
+      setPhotoUrl(user.photoUrl || "");
+      setAge(user.age || "");
+      setGender(user.gender || "");
+      setAbout(user.about || "");
+      setSkills(user.skills || []);
+    }
+  }, [user]);
 
   const saveProfile = async () => {
     setError("");
@@ -96,7 +112,7 @@ const EditProfile = ({ user }) => {
                     </div>
                     <ul
                       tabIndex={0}
-                      className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+                      className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow"
                     >
                       <li>
                         <button onClick={() => setGender("Male")}>Male</button>
@@ -116,12 +132,12 @@ const EditProfile = ({ user }) => {
                 </label>
                 <label className="form-control w-full max-w-xs my-2">
                   <div className="label">
-                    <span className="label-text">Skills</span>
+                    <span className="label-text">Skills (comma separated)</span>
                   </div>
                   <input
                     type="text"
-                    value={skills}
-                    onChange={(e) => setSkills(e.target.value.split(","))}
+                    value={Array.isArray(skills) ? skills.join(", ") : skills}
+                    onChange={(e) => setSkills(e.target.value.split(",").map(s => s.trim()))}
                     className="input input-bordered w-full max-w-xs"
                   />
                 </label>
@@ -150,6 +166,7 @@ const EditProfile = ({ user }) => {
         </div>
         <UserCard
           user={{ firstName, lastName, photoUrl, about, age, gender, skills }}
+          showActions={false}
         />
       </div>
       {showToast && (
