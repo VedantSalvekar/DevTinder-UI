@@ -20,18 +20,6 @@ const EditProfile = ({ user }) => {
   useEffect(() => {
     console.log("EditProfile - Received user prop:", user);
   }, [user]);
-  
-  useEffect(() => {
-    if (user) {
-      setFirstname(user.firstName || "");
-      setLastName(user.lastName || "");
-      setPhotoUrl(user.photoUrl || "");
-      setAge(user.age || "");
-      setGender(user.gender || "");
-      setAbout(user.about || "");
-      setSkills(user.skills || []);
-    }
-  }, [user]);
 
   const saveProfile = async () => {
     setError("");

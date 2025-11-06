@@ -22,7 +22,7 @@ const Login = () => {
       setError("Please fill in all fields");
       return;
     }
-    
+
     try {
       setLoading(true);
       setError("");
@@ -50,12 +50,12 @@ const Login = () => {
       setError("Please fill in all fields");
       return;
     }
-    
+
     if (password.length < 6) {
       setError("Password must be at least 6 characters");
       return;
     }
-    
+
     try {
       setLoading(true);
       setError("");
@@ -71,19 +71,12 @@ const Login = () => {
           withCredentials: true,
         }
       );
-      console.log("Signup response:", res.data);
-      
-      let userData = res.data.data || res.data;
-      
-      if (userData.data) {
-        userData = userData.data;
-      }
-      
-      console.log("User data to dispatch:", userData);
-      
-      // Dispatch user data and navigate to profile page
-      dispatch(addUser(userData));
-      return navigate("/profile");
+
+      dispatch(addUser(res.data.data));
+
+      setTimeout(() => {
+        navigate("/profile");
+      }, 100);
     } catch (error) {
       setError(error?.response?.data || "Signup failed. Please try again.");
       console.error("Signup error:", error);
@@ -149,8 +142,10 @@ const Login = () => {
         >
           {loading ? (
             <span className="loading loading-spinner loading-sm"></span>
+          ) : isLoginForm ? (
+            "Login"
           ) : (
-            isLoginForm ? "Login" : "Signup"
+            "Signup"
           )}
         </button>
         <p
@@ -160,9 +155,7 @@ const Login = () => {
             setError("");
           }}
         >
-          {isLoginForm
-            ? "New user? Signup here"
-            : "Existing User? Login here"}
+          {isLoginForm ? "New user? Signup here" : "Existing User? Login here"}
         </p>
       </fieldset>
     </div>

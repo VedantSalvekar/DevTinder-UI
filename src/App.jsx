@@ -9,6 +9,7 @@ import Feed from "./components/Feed";
 import Profile from "./components/Profile";
 import Connections from "./components/Connections";
 import Requests from "./components/Request";
+import Premium from "./components/Premium";
 
 function App() {
   return (
@@ -17,12 +18,12 @@ function App() {
         <BrowserRouter basename="/">
           <Routes>
             <Route path="/" element={<Body />}>
-              {/* <Route index element={<Navigate to="/login" replace />} /> */}
               <Route path="/login" element={<Login />} />
               <Route path="/feed" element={<Feed />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/connections" element={<Connections />} />
               <Route path="/requests" element={<Requests />} />
+              <Route path="/premium" element={<Premium />} />
             </Route>
           </Routes>
         </BrowserRouter>

@@ -48,7 +48,10 @@ const Navbar = () => {
               <div className="w-10 rounded-full">
                 <img
                   alt={user.firstName || "User"}
-                  src={user.photoUrl || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"}
+                  src={
+                    user.photoUrl ||
+                    "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  }
                 />
               </div>
             )}
@@ -73,6 +76,12 @@ const Navbar = () => {
               <li>
                 <Link to="/requests" className="justify-between">
                   Requests
+                  <span className="badge">New</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/premium" className="justify-between">
+                  Premium
                   <span className="badge">New</span>
                 </Link>
               </li>
