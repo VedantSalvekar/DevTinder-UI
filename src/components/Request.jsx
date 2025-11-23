@@ -11,23 +11,25 @@ const Requests = () => {
   const requests = useSelector((store) => store.requests);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState("");
+  const [actionError, setActionError] = useState("");
 
   const reviewRequest = async (status, _id) => {
     try {
       setLoading(_id);
-      const res = await axios.post(
+      setActionError("");
+      await axios.post(
         BASE_URL + "request/review/" + status + "/" + _id,
         {},
         { withCredentials: true }
       );
       dispatch(removeRequestsById(_id));
-      console.log(res.data);
     } catch (err) {
       console.error("Error reviewing request:", err);
-      alert(
+      setActionError(
         err.response?.data?.message ||
           "Failed to review request. Please try again."
       );
+      setTimeout(() => setActionError(""), 3000);
     } finally {
       setLoading("");
     }
@@ -85,6 +87,12 @@ const Requests = () => {
           {requests?.length === 1 ? "request" : "requests"}
         </p>
       </div>
+
+      {actionError && (
+        <div className="alert alert-error max-w-md mx-auto mb-6 shadow-lg">
+          <span>{actionError}</span>
+        </div>
+      )}
 
       {requests?.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

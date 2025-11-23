@@ -18,7 +18,6 @@ const Connections = () => {
         withCredentials: true,
       });
       dispatch(addConnections(res.data));
-      console.log(res.data);
     } catch (err) {
       console.error("Error fetching connections:", err);
       setError(

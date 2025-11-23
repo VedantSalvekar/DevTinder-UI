@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import "./App.css";
-import Navbar from "./components/Navbar";
 import Body from "./components/Body";
 import Login from "./components/Login";
 import { Provider } from "react-redux";
@@ -19,13 +18,14 @@ function App() {
         <BrowserRouter basename="/">
           <Routes>
             <Route path="/" element={<Body />}>
-              <Route path="/login" element={<Login />} />
-              <Route path="/feed" element={<Feed />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/connections" element={<Connections />} />
-              <Route path="/requests" element={<Requests />} />
-              <Route path="/premium" element={<Premium />} />
-              <Route path="/chat/:targetUserId" element={<Chat />} />
+              <Route index element={<Navigate to="/feed" replace />} />
+              <Route path="login" element={<Login />} />
+              <Route path="feed" element={<Feed />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="connections" element={<Connections />} />
+              <Route path="requests" element={<Requests />} />
+              <Route path="premium" element={<Premium />} />
+              <Route path="chat/:targetUserId" element={<Chat />} />
             </Route>
           </Routes>
         </BrowserRouter>

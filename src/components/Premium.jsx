@@ -4,7 +4,6 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 
 const Premium = () => {
-  const user = useSelector((store) => store.user);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
@@ -59,7 +58,7 @@ const Premium = () => {
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4">
-              Upgrade to DevTinder Premium
+              Upgrade to GitTogether Premium
             </h1>
             <p className="text-lg opacity-70">
               Find your perfect match faster with premium features

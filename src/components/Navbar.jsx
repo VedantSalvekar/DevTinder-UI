@@ -28,8 +28,8 @@ const Navbar = () => {
   return (
     <div className="navbar bg-base-300 shadow-sm">
       <div className="flex-1">
-        <Link to="/feed" className="btn btn-ghost text-xl">
-          DevTinder
+        <Link to="/feed" className="btn btn-ghost text-xl font-bold">
+          <span className="text-vscode-green">Git</span>Together
         </Link>
       </div>
       <div className="flex gap-2">
@@ -62,30 +62,17 @@ const Navbar = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
               <li>
-                <Link to="/profile" className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
-                </Link>
+                <Link to="/profile">Profile</Link>
               </li>
               <li>
-                <Link to="/connections" className="justify-between">
-                  Connections
-                  <span className="badge">New</span>
-                </Link>
+                <Link to="/connections">Connections</Link>
               </li>
               <li>
-                <Link to="/requests" className="justify-between">
-                  Requests
-                  <span className="badge">New</span>
-                </Link>
+                <Link to="/requests">Requests</Link>
               </li>
               <li>
-                <Link to="/premium" className="justify-between">
-                  Premium
-                  <span className="badge">New</span>
-                </Link>
+                <Link to="/premium">Premium</Link>
               </li>
-
               <li>
                 <Link onClick={handleLogOut}>Logout</Link>
               </li>

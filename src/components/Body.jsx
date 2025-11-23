@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import Navbar from "./Navbar";
 import { Outlet, useNavigate } from "react-router";
 import Footer from "./Footer";
@@ -11,7 +11,8 @@ const Body = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
-  const fetchUser = async () => {
+  
+  const fetchUser = useCallback(async () => {
     try {
       const res = await axios.get(BASE_URL + "profile/view", {
         withCredentials: true,
@@ -23,16 +24,20 @@ const Body = () => {
       }
       console.log(err);
     }
-  };
+  }, [dispatch, navigate]);
+  
   useEffect(() => {
     if (!user) {
       fetchUser();
     }
-  }, []);
+  }, [user, fetchUser]);
+  
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-      <Outlet />
+      <main className="flex-grow">
+        <Outlet />
+      </main>
       <Footer />
     </div>
   );
