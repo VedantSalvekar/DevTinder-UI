@@ -10,8 +10,7 @@ const Premium = () => {
 
   const silverPerks = [
     "See who liked your profile",
-    "Unlimited Rewinds",
-    "1 Boost per month",
+    "Top profile visibility",
     "Priority customer support",
   ];
 
@@ -19,11 +18,7 @@ const Premium = () => {
     "All Silver features",
     "Unlimited Super Likes",
     "See who viewed your profile",
-    "Top profile visibility",
-    "5 Boosts per month",
-    "Advanced filters",
     "Premium badge on profile",
-    "Ad-free experience",
   ];
 
   const handlePurchase = async (plan) => {
@@ -72,14 +67,14 @@ const Premium = () => {
               <div className="card-body">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="card-title text-3xl">
-                    <span className="text-gray-400"></span> Silver
+                    <span className="text-gray-200">Silver</span>
                   </h2>
                   <div className="badge badge-lg badge-outline">Popular</div>
                 </div>
 
                 <div className="mb-6">
                   <div className="text-4xl font-bold mb-2">
-                    $9.99
+                    €9.99
                     <span className="text-lg font-normal opacity-70">
                       /month
                     </span>
@@ -94,7 +89,7 @@ const Premium = () => {
                   </h3>
                   {silverPerks.map((perk, index) => (
                     <div key={index} className="flex items-start gap-3">
-                      <div> - </div>
+                      <div className="text-[#ba31dc]"> - </div>
 
                       <span className="text-base">{perk}</span>
                     </div>
@@ -116,7 +111,7 @@ const Premium = () => {
             <div className="card bg-base-300 shadow-2xl border-2 border-yellow-600 hover:border-yellow-400 transition-all duration-300 relative">
               {/* Best Value Badge */}
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-                <div className="badge badge-secondary badge-lg px-6 py-4 text-sm font-bold">
+                <div className="badge badge-secondary badge-lg px-6 py-4 text-sm font-bold text-yellow-500">
                   BEST VALUE
                 </div>
               </div>
@@ -124,14 +119,14 @@ const Premium = () => {
               <div className="card-body">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="card-title text-3xl">
-                    <span className="text-yellow-500"></span> Gold
+                    <span className="text-yellow-500">Gold</span>
                   </h2>
                   <div className="badge badge-lg badge-warning">Premium</div>
                 </div>
 
                 <div className="mb-6">
                   <div className="text-4xl font-bold mb-2">
-                    $19.99
+                    €19.99
                     <span className="text-lg font-normal opacity-70">
                       /month
                     </span>
@@ -148,8 +143,8 @@ const Premium = () => {
                     Everything in Silver, plus:
                   </h3>
                   {goldPerks.map((perk, index) => (
-                    <div key={index} className="flex items-start gap-3">
-                      <div> - </div>
+                    <div key={index} className="flex items-start gap-3 ">
+                      <div className="text-[#ba31dc]"> - </div>
                       <span className="text-base font-medium">{perk}</span>
                     </div>
                   ))}

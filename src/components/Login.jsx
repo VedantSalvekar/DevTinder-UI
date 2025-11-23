@@ -121,7 +121,7 @@ const Login = () => {
           </p>
           <div className="space-y-4">
             <div className="flex items-start gap-3">
-              <div className="text-[#3fb950] text-xl mt-1">/</div>
+              <div className="text-[#ba31dc] text-xl mt-1">/</div>
               <div>
                 <h3 className="text-[#c9d1d9] font-semibold mb-1">
                   Find Developers
@@ -132,7 +132,7 @@ const Login = () => {
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="text-[#3fb950] text-xl mt-1">/</div>
+              <div className="text-[#ba31dc] text-xl mt-1">/</div>
               <div>
                 <h3 className="text-[#c9d1d9] font-semibold mb-1">
                   Build Connections
@@ -143,7 +143,7 @@ const Login = () => {
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="text-[#3fb950] text-xl mt-1">/</div>
+              <div className="text-[#ba31dc] text-xl mt-1">/</div>
               <div>
                 <h3 className="text-[#c9d1d9] font-semibold mb-1">
                   Grow Your Network
